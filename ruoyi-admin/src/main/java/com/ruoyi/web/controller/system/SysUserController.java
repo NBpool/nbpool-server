@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.annotation.Anonymous;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -140,6 +142,17 @@ public class SysUserController extends BaseController
             return error("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setCreateBy(getUsername());
+        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
+        return toAjax(userService.insertUser(user));
+    }
+
+    @Anonymous
+    @PostMapping("/addUser")
+    public AjaxResult addUser(@Validated @RequestBody SysUser user) {
+        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user))) {
+            return error("新增用户'" + user.getUserName() + "'失败，用户名已存在");
+        }
+        user.setNickName(user.getUserName());
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         return toAjax(userService.insertUser(user));
     }
