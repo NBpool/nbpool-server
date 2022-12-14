@@ -62,12 +62,14 @@ public class SysRegisterService
         else if (username.length() < UserConstants.USERNAME_MIN_LENGTH
                 || username.length() > UserConstants.USERNAME_MAX_LENGTH)
         {
-            msg = "账户长度必须在2到20个字符之间";
+            msg = String.format("账户长度必须在%d到%d个字符之间",
+                    UserConstants.USERNAME_MIN_LENGTH, UserConstants.USERNAME_MAX_LENGTH);
         }
         else if (password.length() < UserConstants.PASSWORD_MIN_LENGTH
                 || password.length() > UserConstants.PASSWORD_MAX_LENGTH)
         {
-            msg = "密码长度必须在5到20个字符之间";
+            msg = String.format("密码长度必须在%d到%d个字符之间",
+                    UserConstants.PASSWORD_MIN_LENGTH, UserConstants.PASSWORD_MAX_LENGTH);
         }
         else if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(sysUser)))
         {

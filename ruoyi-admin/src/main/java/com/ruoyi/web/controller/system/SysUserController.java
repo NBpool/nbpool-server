@@ -146,17 +146,6 @@ public class SysUserController extends BaseController
         return toAjax(userService.insertUser(user));
     }
 
-    @Anonymous
-    @PostMapping("/addUser")
-    public AjaxResult addUser(@Validated @RequestBody SysUser user) {
-        if (UserConstants.NOT_UNIQUE.equals(userService.checkUserNameUnique(user))) {
-            return error("新增用户'" + user.getUserName() + "'失败，用户名已存在");
-        }
-        user.setNickName(user.getUserName());
-        user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
-        return toAjax(userService.insertUser(user));
-    }
-
     /**
      * 修改用户
      */
